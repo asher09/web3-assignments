@@ -7,6 +7,12 @@ export function TokenLaunchpad() {
     const wallet  = useWallet();
     
     async function createToken() {
+        const name = document.getElementById('name').value;
+        const symbol = document.getElementById('symbol').value;
+        const imageUrl = document.getElementById('imageUrl').value;
+        const initialSupply = document.getElementById('initialSupply').value;
+        
+        
         const lamports = await getMinimumBalanceForRentExemptMint(connection)
         const keypair = Keypair.generate()
 
@@ -32,10 +38,10 @@ export function TokenLaunchpad() {
         flexDirection: 'column'
     }}>
         <h1>Solana Token Launchpad</h1>
-        <input className='inputText' type='text' placeholder='Name'></input> <br />
-        <input className='inputText' type='text' placeholder='Symbol'></input> <br />
-        <input className='inputText' type='text' placeholder='Image URL'></input> <br />
-        <input className='inputText' type='text' placeholder='Initial Supply'></input> <br />
+        <input className='name' type='text' placeholder='Name'></input> <br />
+        <input className='symbol' type='text' placeholder='Symbol'></input> <br />
+        <input className='imageUrl' type='text' placeholder='Image URL'></input> <br />
+        <input className='initialSupply' type='text' placeholder='Initial Supply'></input> <br />
         <button onClick={createToken} className='btn'>Create a token</button>
     </div>
 }
