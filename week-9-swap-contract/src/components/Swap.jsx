@@ -9,9 +9,9 @@ const connection = new Connection('https://api.mainnet-beta.solana.com');
 
 const wallet = new Wallet(Keypair.fromSecretKey(bs58.decode(process.env.PRIVATE_KEY)));
 
-async function main() {
+export function Swap() {
     const response = await (
-        await axios.get('https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=100000000&slippageBps=50'
+        axios.get('https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=100000000&slippageBps=50'
         )
       );
       const quoteResponse = response.data;
@@ -19,7 +19,7 @@ async function main() {
 
       try {
         const { data: { swapTransaction } } = await (
-            await axios.post('https://quote-api.jup.ag/v6/swap', {
+            axios.post('https://quote-api.jup.ag/v6/swap', {
                 quoteResponse,
                 userPublicKey: wallet.publicKey.toString(),
             })
@@ -50,5 +50,3 @@ async function main() {
       }
       
 }
-
-main();
