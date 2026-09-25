@@ -10,6 +10,15 @@ const connection = new Connection('https://api.mainnet-beta.solana.com');
 const wallet = new Wallet(Keypair.fromSecretKey(bs58.decode(process.env.PRIVATE_KEY)));
 
 export function Swap() {
+
+
+    async function getQuote() {
+
+    }
+
+    async function swapTokens() {
+        
+    }
     const response = await (
         axios.get('https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=100000000&slippageBps=50'
         )
@@ -49,4 +58,29 @@ export function Swap() {
         console.log(e)
       }
       
+    return (
+        <>
+            <h1>Swap SOL for USDC</h1>
+            <div>
+                <label>SOL</label>
+                <input
+                    type="number"
+                    min="0"
+                    placeholder="SOL amount"
+                />
+            </div>
+            <div>
+                <label>USDC</label>
+                <input
+                    id="outputAmount"
+                    type="text"
+                    placeholder="Estimated USDC"
+                    readOnly
+                />
+            </div>
+            <button onClick={swapTokens}>
+                SWAP
+            </button>
+        </>
+    )
 }
