@@ -1,15 +1,13 @@
-const { Connection, VersionedTransaction } = require('@solana/web3.js');
-const axios = require('axios');
-const { Wallet } = require('@project-serum/anchor');
-const bs58 = require('bs58');
-
+import  { VersionedTransaction } from '@solana/web3.js';
+import {useConnection, useWallet} from '@solana/wallet-adapter-react';
+import axios from 'axios';
 // It is recommended that you use your own RPC endpoint.
 // This RPC endpoint is only for demonstration purposes so that this example will run.
 
 
 export function Swap() {
 
-    const connection = new Connection('https://api.devnet.solana.com');
+    const {connection } = useConnection();
     const wallet =  useWallet();
 
     async function getQuote() {
