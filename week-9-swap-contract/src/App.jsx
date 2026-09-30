@@ -11,8 +11,25 @@ function App() {
             <WalletProvider wallets={[]}  autoConnect>
                 
                 <WalletModalProvider>
-                    <WalletMultiButton />
+                <div
+                    style={{
+                        width: "100%",
+                    }}
+                >
+                    <div
+                        style={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            padding: "12px",
+                            boxSizing: "border-box",
+                        }}
+                    >
+                        <WalletMultiButton />    
+                    </div>
+                
                     <Swap />
+                </div>
                 </WalletModalProvider>
 
             </WalletProvider>
