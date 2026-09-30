@@ -1,6 +1,7 @@
 import  { VersionedTransaction } from '@solana/web3.js';
 import {useConnection, useWallet} from '@solana/wallet-adapter-react';
 import axios from 'axios';
+import { Buffer } from 'node:buffer';
 // It is recommended that you use your own RPC endpoint.
 // This RPC endpoint is only for demonstration purposes so that this example will run.
 
@@ -15,16 +16,16 @@ export function Swap() {
     }
 
     async function swapTokens() {
-        const response = await (
-            axios.get('https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=100000000&slippageBps=50'
-            )
-        );
-        const quoteResponse = response.data;
-        console.log(quoteResponse);
+        try{
+            const response = await (
+                axios.get('https://lite-api.jup.ag/swap/v1/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=100000000&slippageBps=50'
+                )
+            );
+            const quoteResponse = response.data;
+            console.log(quoteResponse);
 
-        try {
             const { data: { swapTransaction } } = await (
-                axios.post('https://quote-api.jup.ag/v6/swap', {
+                axios.post('https://lite-api.jup.ag/swap/v1/swap', {
                     quoteResponse,
                     userPublicKey: wallet.publicKey.toString(),
                 })
@@ -35,11 +36,11 @@ export function Swap() {
             var transaction = VersionedTransaction.deserialize(swapTransactionBuf);
             console.log(transaction);
             
-            transaction.sign([wallet.payer]);
+            const signedTransaction = await wallet.signTransaction(transaction);
             const latestBlockHash = await connection.getLatestBlockhash();
 
             // execute the transaction
-            const rawTransaction = transaction.serialize()
+            const rawTransaction = signedTransaction.serialize()
             const txid = await connection.sendRawTransaction(rawTransaction, {
                 skipPreflight: true,
                 maxRetries: 2
@@ -50,8 +51,8 @@ export function Swap() {
                 signature: txid
             });
             console.log(`https://solscan.io/tx/${txid}`); 
-        } catch(e) {
-            console.log(e)
+        } catch (e) {
+            console.log("Swap failed", e)
         }
     }
       
